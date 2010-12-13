@@ -3,49 +3,59 @@
 android:layout_width="fill_parent"
 android:gravity="top"
 android:layout_height="fill_parent">
-
-<TextView  
-	android:id="@+id/message"
-	android:gravity="bottom"
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text=""
-    />
-
-<TextView
-android:id="@+id/label"
-android:layout_width="fill_parent"
-android:layout_height="wrap_content"
-android:text=" "/>
-
-<EditText
-android:id="@+id/entry"
-android:layout_width="fill_parent"
-android:layout_height="wrap_content"
-android:background="@android:drawable/editbox_background"
-android:layout_below="@id/label"/>
-
-<Button
-android:id="@+id/ok"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_below="@id/entry"
-android:layout_alignParentRight="true"
-android:layout_marginLeft="10dip"
-android:text="Send" />
-
-<Button
-android:id="@+id/xxl"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_toLeftOf="@id/ok"
-android:layout_alignTop="@id/ok"
-android:text="Clear" />
-
-<TextView
-android:id="@+id/label"
-android:layout_width="fill_parent"
-android:layout_height="wrap_content"
-android:text=" "/>
-
-     </RelativeLayout>
+	
+	<TextView  
+		android:id="@+id/message"
+		android:gravity="bottom"
+	    android:layout_width="fill_parent" 
+	    android:layout_height="wrap_content"
+	/>
+	
+	<TextView
+		android:id="@+id/label"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+	/>
+	
+	<EditText
+		android:id="@+id/entry"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:background="@android:drawable/editbox_background"
+		android:layout_below="@id/label"
+	/>
+	
+	<Button
+		android:id="@+id/ok"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/entry"
+		android:layout_alignParentRight="true"
+		android:layout_marginLeft="10dip"
+		android:text="@string/send_text"
+	/>
+	
+	<Button
+		android:id="@+id/xxl"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toLeftOf="@id/ok"
+		android:layout_alignTop="@id/ok"
+		android:text="@string/clear_text"
+	/>
+	
+	<Button
+		android:id="@+id/begin"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_toLeftOf="@id/xxl"
+		android:layout_alignTop="@id/ok"
+		android:text="@string/begin_text"
+	/>
+	
+	<TextView
+		android:id="@+id/label"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+	/>
+</RelativeLayout>

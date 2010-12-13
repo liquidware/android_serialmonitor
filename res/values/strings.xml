@@ -2,4 +2,7 @@
 <resources>
     <string name="hello">Hello World, serialMonitor!</string>
     <string name="app_name">Serial Monitor</string>
+    <string name="clear_text">Clear</string>
+    <string name="send_text">Send</string>
+    <string name="begin_text">Begin</string>
 </resources>
