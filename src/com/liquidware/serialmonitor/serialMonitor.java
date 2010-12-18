@@ -2,8 +2,8 @@ package com.liquidware.serialmonitor;
 
 import android.util.*;
 import android.content.Context;
-import android.location.*;
-import android.location.GpsStatus.*;
+import android.serial.*;
+import android.serial.SerialStatus.*;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,13 +14,16 @@ import android.widget.TextView;
 public class serialMonitor extends Activity {
 	private static final String TAG = "SerialMonitor";
 	TextView tv;
+	boolean enabled = false;
+	int baud = 57600;
+	String device = "ttyUSB0";
 	
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		final SerialManager Serial = (SerialManager) getSystemService(Context.SERIAL_SERVICE);
 		
 		//Text View
 	    tv = (TextView) findViewById(R.id.message);
@@ -31,17 +34,20 @@ public class serialMonitor extends Activity {
 		
 		//Clear Button
 		final Button cButton = (Button) findViewById(R.id.xxl);
-		
-		add_text("About to create lm");
-		final LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		add_text("Done creating lm");
+		cButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				et.setText("");
+				tv.setText("");
+			  }
+			});
 		
 		//Send Button
 		final Button sButton = (Button) findViewById(R.id.ok);
 		sButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				lm.SerialPrint("Hi Ardy!");
-				//et.setText("");
+				String msg = et.getText().toString();
+				
+				Serial.print(msg); //send the data in the message box
 			}
 		});
 		
@@ -49,45 +55,42 @@ public class serialMonitor extends Activity {
 		final Button bButton = (Button) findViewById(R.id.begin);
 		bButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				
-				add_text("About to create ll");
-				final LocationListener ll = new LocationListener(){
-				       //sample listener...
-					public void onLocationChanged(Location location) { }
-					public void onStatusChanged(String provider, int status, Bundle extras) { }
-					public void onProviderEnabled(String provider) { }
-					public void onProviderDisabled(String provider) { }
-				};
-				
 
+				if (enabled) {
+					/* Disable */
+					add_text("Ending Serial");
+					Serial.end(device);
+					bButton.setText("Begin");
+					enabled = false;
+					return;
+				}
 				
-				add_text("Creating a SerialMsgListener");
-				final GpsStatus.SerialMsgListener nl = new GpsStatus.SerialMsgListener() {
-				   @Override
-				   public void onSerialMsgReceived(String sMsg) {
-				      /*
-				       * Broadcast a message..
-				       */
-					   add_text(sMsg);
-				   }
-				};
-				
-				lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 50, 0, ll);
-				lm.addSerialMsgListener(nl);
+				/* Begin */
+				if (Serial.begin(device, baud)) {
+					add_text("Beginning Serial @" + baud + " baud");
+					enabled = true;
+					add_text("Ready");
+					bButton.setText("End");
+				} else {
+					add_text("Error: Could not start serial.");
+				}
 			 }
-		
-
 		});
 	
-	cButton.setOnClickListener(new View.OnClickListener() {
-	public void onClick(View v) {
-		et.setText("");
-		tv.setText("");
-	  }
-	});
 	
+	
+	/* Handle Serial messages */
+	final SerialStatus.SerialMsgListener sl = new SerialStatus.SerialMsgListener() {
+		   public void onSerialMsgReceived(String sMsg) {
+		      /*
+		       * Handle the message..
+		       */
+			   add_text(sMsg);
+		   }
+		};
+	Serial.addSerialMsgListener(sl);
 
-  }
+  } /* on create */
 	
 	/**
 	 * Utility
