@@ -11,6 +11,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+/**
+ * Serial Montior App
+ * 
+ * 		This is application demonstrates how to use 
+ * 		Serial.begin(), Serial.print(), and onSerialMsgReceived() 
+ * 		using the Liquidware Universal Android OS Serial interface.
+ *
+ * @author Chris Ladden @ liquidware.com
+ *
+ */
 public class serialMonitor extends Activity {
 	private static final String TAG = "SerialMonitor";
 	TextView tv;
