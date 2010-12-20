@@ -7,8 +7,10 @@ import android.serial.SerialStatus.*;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 /**
@@ -27,6 +29,11 @@ public class serialMonitor extends Activity {
 	boolean enabled = false;
 	int baud = 57600;
 	String device = "ttyUSB0";
+	Spinner devSpinner;
+	Spinner baudSpinner;
+	String[] devices = {"ttyUSB0", "ttyUSB1", "ttyUSB2"};
+	String[] bauds = {"4800", "9600", "57600", "115200", "230400", "1000000", "2000000", "3000000", "4000000"};
+
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -38,7 +45,28 @@ public class serialMonitor extends Activity {
 		//Text View
 	    tv = (TextView) findViewById(R.id.message);
 	    tv.setLines(14);
-		
+	    
+	    //Spinners
+	    devSpinner = (Spinner) this.findViewById(R.id.device);
+	    baudSpinner = (Spinner) this.findViewById(R.id.baud);
+	    
+	    ArrayAdapter<CharSequence> devAdapter = new ArrayAdapter<CharSequence>(
+	    		this, android.R.layout.simple_spinner_item);
+	    ArrayAdapter<CharSequence> baudAdapter = new ArrayAdapter<CharSequence>(
+	    		this, android.R.layout.simple_spinner_item);
+	    
+	    for (int i = 0; i < devices.length; i++) {
+	    	devAdapter.add(devices[i]);
+	    }
+	    for (int i = 0; i < bauds.length; i++) {
+	    	baudAdapter.add(bauds[i]);
+	    }
+	    
+	    devAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        devSpinner.setAdapter(devAdapter);
+	    baudAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        baudSpinner.setAdapter(baudAdapter);
+        
 	    //Editext field
 		final EditText et = (EditText) findViewById(R.id.entry);
 		
@@ -76,6 +104,8 @@ public class serialMonitor extends Activity {
 				}
 				
 				/* Begin */
+				device = devices[devSpinner.getSelectedItemPosition()];
+				baud = Integer.parseInt(bauds[baudSpinner.getSelectedItemPosition()]);
 				if (Serial.begin(device, baud)) {
 					add_text("Beginning Serial @" + baud + " baud");
 					enabled = true;
